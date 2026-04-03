@@ -1,0 +1,10 @@
+-- 示例表：图书（默认 H2 内存库使用）
+CREATE TABLE IF NOT EXISTS book (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title       VARCHAR(200) NOT NULL,
+    author      VARCHAR(100),
+    isbn        VARCHAR(32),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted     TINYINT DEFAULT 0
+);

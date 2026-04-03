@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    图书 Mapper XML：所有与 Book 相关的自定义 SQL 均在此实现。
+    命名空间对应接口：com.example.bookservice.mapper.BookMapper
+-->
+<mapper namespace="com.example.bookservice.mapper.BookMapper">
+
+    <!-- 实体与表字段映射 -->
+    <resultMap id="BaseResultMap" type="com.example.bookservice.entity.Book">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="author" property="author"/>
+        <result column="isbn" property="isbn"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <!-- 通用列，便于 SQL 片段复用 -->
+    <sql id="Base_Column_List">
+        id, title, author, isbn, created_at, updated_at, deleted
+    </sql>
+
+    <!-- 根据作者查询未删除的图书，按 id 排序 -->
+    <select id="selectByAuthor" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM book
+        WHERE deleted = 0 AND author = #{author}
+        ORDER BY id
+    </select>
+
+    <!-- 根据主键更新标题，仅更新未删除记录 -->
+    <update id="updateTitleById">
+        UPDATE book
+        SET title = #{title}, updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id} AND deleted = 0
+    </update>
+</mapper>
